@@ -1,0 +1,16 @@
+{% load display %}
+{{ form.non_field_errors }}
+{% for field in form %}
+    {% if field.name != "captcha" %}
+        {% include "field.html" %}
+    {% endif %}
+{% endfor %}
+<div class="field">
+    {{ form.captcha.label_tag }}
+    <div class="captcha-row">
+        <bdi dir="ltr" class="challenge">{{ captcha_question|fa_digits }} = ؟</bdi>
+        {{ form.captcha }}
+        <a class="button secondary" href="{{ request.path }}{% if next %}?next={{ next|urlencode }}{% endif %}">سؤال جدید</a>
+    </div>
+    {{ form.captcha.errors }}
+</div>

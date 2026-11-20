@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{% if expense %}ویرایش هزینه{% else %}ثبت هزینه{% endif %}{% endblock %}
+{% block content %}
+<section class="panel form-panel">
+    <h1>{% if expense %}ویرایش هزینه{% else %}ثبت هزینه جدید{% endif %}</h1>
+    <form method="post" class="stack">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}{% include "field.html" %}{% endfor %}
+        <div class="form-actions">
+            <button class="button primary" type="submit">ذخیره هزینه</button>
+            <a class="button secondary" href="{% url 'dashboard' %}">انصراف</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

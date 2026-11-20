@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-shell">
+    <section class="auth-intro">
+        <div class="brand intro-brand">
+            <span class="brand-icon" aria-hidden="true"></span>
+            <span lang="en" dir="ltr">costmanagement</span>
+        </div>
+        <div>
+            <h1>مدیریت هزینه‌های<br> شخصی</h1>
+            <p>مخارج روزمره را ثبت کنید و هزینه‌های ماه را یک‌جا ببینید.</p>
+        </div>
+    </section>
+    <section class="auth-content">
+        {% include "theme_button.html" %}
+        {% include "messages.html" %}
+        {% block auth_content %}{% endblock %}
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load display %}
+{% block title %}حذف هزینه{% endblock %}
+{% block content %}
+<section class="panel form-panel">
+    <h1>حذف هزینه</h1>
+    <p>هزینهٔ «{{ expense.title }}» به مبلغ {{ expense.amount|money }} تومان حذف شود؟</p>
+    <form class="form-actions" method="post">
+        {% csrf_token %}
+        <button class="button danger" type="submit">حذف هزینه</button>
+        <a class="button secondary" href="{% url 'dashboard' %}">انصراف</a>
+    </form>
+</section>
+{% endblock %}

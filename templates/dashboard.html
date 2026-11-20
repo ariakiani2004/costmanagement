@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load display %}
+{% block title %}داشبورد{% endblock %}
+{% block content %}
+<header class="page-head">
+    <div>
+        <h1>داشبورد هزینه‌ها</h1>
+        <p class="subtext">خلاصه و فهرست هزینه‌های شخصی شما</p>
+    </div>
+    <a class="button primary" href="{% url 'expense_new' %}"><span aria-hidden="true">+</span> ثبت هزینه جدید</a>
+</header>
+<section class="stats" aria-label="خلاصه هزینه‌ها">
+    <div class="stat stat-highlight">
+        <span>هزینهٔ این ماه</span>
+        <strong>{{ month_total|money }} <small>تومان</small></strong>
+    </div>
+    <div class="stat">
+        <span>مجموع هزینه‌ها</span>
+        <strong>{{ total|money }} <small>تومان</small></strong>
+    </div>
+    <div class="stat">
+        <span>تعداد هزینه‌های ثبت‌شده</span>
+        <strong>{{ expense_count|fa_digits }} <small>مورد</small></strong>
+    </div>
+</section>
+
+<section class="panel" aria-labelledby="expenses-heading">
+    <div class="panel-head"><h2 id="expenses-heading">فهرست هزینه‌ها</h2></div>
+    <form class="filter-bar" method="get">
+        {% for field in filters %}{% include "field.html" %}{% endfor %}
+        <div class="filter-actions">
+            <button class="button secondary" type="submit">اعمال</button>
+            {% if filter_query %}<a class="clear-link" href="{% url 'dashboard' %}">پاک کردن</a>{% endif %}
+        </div>
+        <div class="export-actions">
+            <button class="button secondary" type="submit" name="export" value="xlsx">دانلود اکسل</button>
+            <button class="button secondary" type="submit" name="export" value="pdf">دانلود PDF</button>
+            <span class="help">برای گزارش تا یک روز مشخص، «تا تاریخ» را پر کنید.</span>
+        </div>
+    </form>
+    {% if page %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr><th scope="col">عنوان</th><th scope="col">دسته‌بندی</th><th scope="col">تاریخ میلادی</th><th scope="col">مبلغ (تومان)</th><th scope="col">عملیات</th></tr>
+            </thead>
+            <tbody>
+                {% for entry in page %}
+                <tr>
+                    <td class="expense-title"><strong>{{ entry.title }}</strong>{% if entry.note %}<small>{{ entry.note|truncatechars:64 }}</small>{% endif %}</td>
+                    <td><span class="category category-{{ entry.category }}">{{ entry.get_category_display }}</span></td>
+                    <td><bdi dir="ltr">{{ entry.spent_on|date:"Y/m/d"|fa_digits }}</bdi></td>
+                    <td class="amount">{{ entry.amount|money }}</td>
+                    <td class="row-actions">
+                        <a href="{% url 'expense_edit' entry.pk %}">ویرایش</a>
+                        <a class="danger-link" href="{% url 'expense_delete' entry.pk %}">حذف</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if page.paginator.num_pages > 1 %}
+        <nav class="pagination" aria-label="صفحه‌بندی هزینه‌ها">
+            {% if page.has_previous %}<a href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page.previous_page_number }}">صفحه قبل</a>{% endif %}
+            <span>صفحهٔ {{ page.number|fa_digits }} از {{ page.paginator.num_pages|fa_digits }}</span>
+            {% if page.has_next %}<a href="?{% if filter_query %}{{ filter_query }}&amp;{% endif %}page={{ page.next_page_number }}">صفحه بعد</a>{% endif %}
+        </nav>
+    {% endif %}
+    {% else %}
+    <div class="empty">
+        <span class="brand-icon" aria-hidden="true"></span>
+        {% if expense_count %}
+            <h3>هزینه‌ای با این فیلترها پیدا نشد.</h3>
+            <a href="{% url 'dashboard' %}">نمایش همهٔ هزینه‌ها</a>
+        {% else %}
+            <h3>هنوز هزینه‌ای ثبت نشده است.</h3>
+            <a href="{% url 'expense_new' %}">ثبت اولین هزینه</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

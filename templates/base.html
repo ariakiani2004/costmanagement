@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}مدیریت هزینه‌های شخصی{% endblock %} | costmanagement</title>
+    <script src="{% static 'theme.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'main.js' %}" defer></script>
+</head>
+<body class="{% if user.is_authenticated %}app-body{% else %}public-body{% endif %}">
+{% if user.is_authenticated %}
+    <aside class="sidebar">
+        <a class="brand" href="{% url 'dashboard' %}">
+            <span class="brand-icon" aria-hidden="true"></span>
+            <span>مدیریت هزینه‌ها <small lang="en" dir="ltr">costmanagement</small></span>
+        </a>
+        <nav class="menu" aria-label="منوی اصلی">
+            <a href="{% url 'dashboard' %}" {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>داشبورد</a>
+            <a href="{% url 'expense_new' %}" {% if request.resolver_match.url_name == 'expense_new' %}aria-current="page"{% endif %}>ثبت هزینه</a>
+            <a href="{% url 'password' %}" {% if request.resolver_match.url_name == 'password' or request.resolver_match.url_name == 'password_done' %}aria-current="page"{% endif %}>تغییر رمز عبور</a>
+            {% include "theme_button.html" %}
+        </nav>
+        <div class="account">
+            <span class="avatar" aria-hidden="true">{{ user.username|first|upper }}</span>
+            <strong><bdi>{{ user.username }}</bdi></strong>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="logout" type="submit">خروج</button>
+            </form>
+        </div>
+    </aside>
+{% endif %}
+<main class="{% if user.is_authenticated %}workspace{% else %}public-main{% endif %}">
+    {% if user.is_authenticated %}{% include "messages.html" %}{% endif %}
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>

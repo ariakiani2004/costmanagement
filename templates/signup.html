@@ -1,0 +1,12 @@
+{% extends "auth_layout.html" %}
+{% block title %}ثبت‌نام{% endblock %}
+{% block auth_content %}
+<h2>ساخت حساب</h2>
+<p class="subtext">برای ثبت هزینه‌ها، یک حساب شخصی بسازید.</p>
+<form method="post" class="stack">
+    {% csrf_token %}
+    {% include "account_fields.html" %}
+    <button class="button primary full" type="submit">ثبت‌نام</button>
+</form>
+<p class="auth-switch">حساب دارید؟ <a href="{% url 'login' %}">ورود</a></p>
+{% endblock %}
