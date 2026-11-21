@@ -70,8 +70,4 @@ python -m venv .venv
 | `templates/` | قالب‌های HTML ورود، ثبت‌نام، داشبورد و فرم‌های هزینه |
 | `static/` | فایل‌های CSS و JavaScript، تنظیم حالت تیره و فونت‌های فارسی |
 
-## نویسندگان
-
-**Aria Kaini** و **Mohammad Arami**
-
 </div>
