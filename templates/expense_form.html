@@ -2,7 +2,7 @@
 {% block title %}{% if expense %}ویرایش هزینه{% else %}ثبت هزینه{% endif %}{% endblock %}
 {% block content %}
 <a class="back-link" href="{% url 'dashboard' %}">بازگشت به داشبورد</a>
-<section class="panel form-panel">
+<section class="panel form-panel" style="margin-inline: auto;">
     <h1>{% if expense %}ویرایش هزینه{% else %}ثبت هزینه جدید{% endif %}</h1>
     <form method="post" class="stack">
         {% csrf_token %}
